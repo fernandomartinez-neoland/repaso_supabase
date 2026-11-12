@@ -1,4 +1,5 @@
 import * as userModel from "../models/user.model.js";
+import { createToken } from "./token.service.js";
 import bcrypt from "bcrypt";
 
 export async function registerUserService(req) {
@@ -34,9 +35,16 @@ export async function loginUserService(req) {
     if (userData) {
       const pass = await bcrypt.compare(password, userData.password);
       if (pass) {
+        const tokenUserData={
+          name: userData.name,
+          email: userData.email,
+          username: userData.username,
+          address: userData.address
+        }
+        const token= createToken(tokenUserData)
         return {
           status: 200,
-          message: "usuario logeado",
+          message: token,
         };
       } else {
         return { status: 401, message: "no autorizado" };
@@ -45,6 +53,6 @@ export async function loginUserService(req) {
       return { status: 401, message: "no autorizado" };
     }
   } catch (e) {
-    return { status: 401, message: "no se que paso pero me caes mal" };
+    return { status: 500, message: "no se que paso pero me caes mal" };
   }
 }

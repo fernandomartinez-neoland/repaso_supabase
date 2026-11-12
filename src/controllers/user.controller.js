@@ -6,5 +6,6 @@ export async function registerUserController(req, res) {
 
 
 export async function loginUserController(req, res){
-  res.status(200).send(await userService.loginUserService(req))
+  const login=await userService.loginUserService(req)
+  res.status(login.status).send(login.message)
 }
