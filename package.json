@@ -1,0 +1,36 @@
+{
+  "name": "repaso_supabase",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000r\u0000e\u0000p\u0000a\u0000s\u0000o\u0000_\u0000s\u0000u\u0000p\u0000a\u0000b\u0000a\u0000s\u0000e\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "contract:emit": "prisma contract emit",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fernandomartinez-neoland/repaso_supabase.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/fernandomartinez-neoland/repaso_supabase/issues"
+  },
+  "homepage": "https://github.com/fernandomartinez-neoland/repaso_supabase#readme",
+  "dependencies": {
+    "@prisma/orm-postgres": "^8.0.0-rc.23",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "@prisma/cli-engine": "^0.9.0",
+    "@types/node": "^26.6.6",
+    "nodemon": "^3.1.14",
+    "prisma": "^8.0.0-rc.33"
+  }
+}
