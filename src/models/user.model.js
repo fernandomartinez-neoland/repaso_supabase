@@ -7,25 +7,33 @@ export async function registerUserModel(
   username,
   address,
 ) {
-    const created = await db.orm.public.User.create({
-      email,
-      password,
-      name,
-      username,
-      address,
-    });
+  const created = await db.orm.public.User.create({
+    email,
+    password,
+    name,
+    username,
+    address,
+  });
 
-    return created;
-
+  return created;
 }
 
-export async function getUserModel(email){
-   email
+export async function getUserModel(email) {
+  email;
 
-
- const result = db.orm.public.User.where( {
+  const result = db.orm.public.User.where({
     email,
   }).first();
 
-return result
+  return result;
+}
+
+export async function getAllUsersModel(email) {
+  email;
+
+  const result = db.orm.public.User.where({
+    email,
+  }).all();
+
+  return result;
 }

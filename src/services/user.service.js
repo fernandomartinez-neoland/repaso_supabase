@@ -56,3 +56,18 @@ export async function loginUserService(req) {
     return { status: 500, message: "no se que paso pero me caes mal" };
   }
 }
+
+export async function getAllUsersService(){
+  try{
+  const users= await userModel.getAllUsersModel()
+  return {
+    status:200,
+    message:users
+  }
+  }catch(e){
+    return {
+    status:403,
+    message:"problemas"
+  }
+  }
+}
