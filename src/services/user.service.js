@@ -26,3 +26,25 @@ export async function registerUserService(req) {
     };
   }
 }
+
+export async function loginUserService(req) {
+  const { email, password } = req.body;
+  try {
+    const userData = await userModel.getUserModel(email);
+    if (userData) {
+      const pass = await bcrypt.compare(password, userData.password);
+      if (pass) {
+        return {
+          status: 200,
+          message: "usuario logeado",
+        };
+      } else {
+        return { status: 401, message: "no autorizado" };
+      }
+    } else {
+      return { status: 401, message: "no autorizado" };
+    }
+  } catch (e) {
+    return { status: 401, message: "no se que paso pero me caes mal" };
+  }
+}

@@ -4,3 +4,7 @@ export async function registerUserController(req, res) {
   res.status(response.status).send(response.message);
 }
 
+
+export async function loginUserController(req, res){
+  res.status(200).send(await userService.loginUserService(req))
+}

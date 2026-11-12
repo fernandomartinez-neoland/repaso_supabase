@@ -1,4 +1,5 @@
 import { db } from "../prisma/db.ts";
+
 export async function registerUserModel(
   email,
   password,
@@ -16,4 +17,15 @@ export async function registerUserModel(
 
     return created;
 
+}
+
+export async function getUserModel(email){
+   email
+
+
+ const result = db.orm.public.User.where( {
+    email,
+  }).first();
+
+return result
 }
