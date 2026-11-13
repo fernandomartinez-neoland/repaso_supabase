@@ -6,6 +6,7 @@ export async function registerUserModel(
   name,
   username,
   address,
+  embedding
 ) {
   const created = await db.orm.public.User.create({
     email,
@@ -13,6 +14,7 @@ export async function registerUserModel(
     name,
     username,
     address,
+    embedding
   });
 
   return created;
@@ -36,4 +38,10 @@ export async function getAllUsersModel(email) {
   }).all();
 
   return result;
+}
+
+
+export async function getVerctorUserModel(embedding){
+  const nearest = await db.orm.public.User.using.embedding_nearest(embedding).all();
+  return nearest
 }

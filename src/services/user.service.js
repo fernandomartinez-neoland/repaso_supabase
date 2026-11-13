@@ -1,5 +1,6 @@
 import * as userModel from "../models/user.model.js";
 import { createToken } from "./token.service.js";
+import { embedding, reranker } from "./embedding.service.js";
 import bcrypt from "bcrypt";
 
 export async function registerUserService(req) {
@@ -8,12 +9,22 @@ export async function registerUserService(req) {
     const saltRounds = 10;
     password = await bcrypt.hash(password, saltRounds);
 
-    await userModel.registerUserModel(email, password, name, username, address);
+    const embeddingData = await embedding(req.body);
+
+    await userModel.registerUserModel(
+      email,
+      password,
+      name,
+      username,
+      address,
+      embeddingData,
+    );
     return {
       status: 201,
       message: "usuario registrado",
     };
   } catch (e) {
+    console.log(e);
     if (e.sqlState === "23505") {
       return {
         status: 409,
@@ -35,13 +46,14 @@ export async function loginUserService(req) {
     if (userData) {
       const pass = await bcrypt.compare(password, userData.password);
       if (pass) {
-        const tokenUserData={
+        const tokenUserData = {
           name: userData.name,
           email: userData.email,
           username: userData.username,
-          address: userData.address
-        }
-        const token= createToken(tokenUserData)
+          address: userData.address,
+        };
+        const token = createToken(tokenUserData);
+
         return {
           status: 200,
           message: token,
@@ -57,17 +69,29 @@ export async function loginUserService(req) {
   }
 }
 
-export async function getAllUsersService(){
-  try{
-  const users= await userModel.getAllUsersModel()
-  return {
-    status:200,
-    message:users
-  }
-  }catch(e){
+export async function getAllUsersService() {
+  try {
+    const users = await userModel.getAllUsersModel();
     return {
-    status:403,
-    message:"problemas"
+      status: 200,
+      message: users,
+    };
+  } catch (e) {
+    return {
+      status: 403,
+      message: "problemas",
+    };
   }
-  }
+}
+
+export async function getUserService(req) {
+  const request= req.body.solcitud
+  const queryVector = await embedding(request);
+  // console.log("vector de la peticion:", queryVector)
+  const nearest =await  userModel.getVerctorUserModel(queryVector);
+  const queryData= nearest.map((item)=>{
+    return item.address
+  })
+  const respuesta=await reranker(request, queryData)
+  return await respuesta.json();
 }

@@ -16,3 +16,8 @@ export async function getAllUsersController(req, res){
    const users=await userService.getAllUsersService()
   res.status(users.status).send(users.message)
 }
+
+
+export async function getUserController(req, res){
+  res.status(200).send(await userService.getUserService(req))
+}
